@@ -255,6 +255,9 @@ def create_lorentz_from_mrrelu(model, gamma=5):
             inp_sh = tuple(c for c in layer.input_shape if c)
             nmodel.add(tf.keras.layers.Flatten(input_shape=inp_sh))
         if "mm_relu" in layer.name:
+            if len(nmodel.layers) == 0:
+                inp_sh = tuple(c for c in layer.input_shape if c)
+                nmodel.add(tf.keras.Input(shape=inp_sh))
             if len(layer.get_weights()) > 1:
                 nmodel.add(
                     Lorentzian(
